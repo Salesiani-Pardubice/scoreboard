@@ -21,7 +21,6 @@ const colors = [
   "bg-pink-600",
   "bg-rose-600",
 ];
-let maxScore = 0;
 
 class Team {
   constructor(name, data, id) {
@@ -32,22 +31,41 @@ class Team {
     data.forEach((value) => {
       this.score += value[0];
     });
-    if (this.score > maxScore) maxScore = this.score;
 
     this.data = data;
   }
 }
 
-function printTeam(team) {
-  let viewHeight = window.innerHeight * 0.70;
+function getMaxScore(data) {
+  let maxScore = 0;
+  let maxDeep = data.values.length;
+
+  for (let col = 0; col < data.values[0].length; col += 2) {
+    let row = 1;
+    let tmp_score = 0;
+
+    while (row < maxDeep && data.values[row][col] != undefined) {
+      tmp_score += parseInt(data.values[row][col]);
+      ++row;
+    }
+    if (tmp_score > maxScore) maxScore = tmp_score;
+  }
+  return maxScore;
+}
+
+function printTeam(team, maxScore) {
+  let viewHeight = window.innerHeight * 0.7;
   let outHtml = `
     <div class="flex flex-col justify-end">
       <h2 class="text-xl">${team.name}</h2>
-      <div class="${colors[team.id]} w-auto text-white flex justify-center items-end text-xl font-mono font-bold" style="height: ${
-        viewHeight * (team.score / maxScore)
-      }px; min-height: 2rem;">${team.score} b</div>
+      <div class="${
+        colors[team.id]
+      } w-auto text-white flex justify-center items-end text-xl font-mono font-bold" style="height: ${
+    viewHeight * (team.score / maxScore)
+  }px; min-height: 2rem;">${team.score} b</div>
     </div>
   `;
+  // console.log(team.score/maxScore);
   return outHtml;
 }
 
@@ -64,6 +82,8 @@ async function render() {
 
   // console.log(data);
 
+  const maxScore = getMaxScore(data);
+
   let outHtml = ""; // output html string
 
   for (let col = 0; col < data.values[0].length; col += 2) {
@@ -73,11 +93,10 @@ async function render() {
       log.push([parseInt(data.values[row][col]), data.values[row][col + 1]]);
     }
     /* Create a team */
-    const team = new Team(data.values[0][col], log, col/2);
-    console.log(team);
+    const team = new Team(data.values[0][col], log, col / 2);
 
     /* Add team html string */
-    outHtml += printTeam(team);
+    outHtml += printTeam(team, maxScore);
   }
 
   /* Redner data */
