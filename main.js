@@ -39,11 +39,11 @@ class Team {
 }
 
 function printTeam(team) {
-  let viewHeight = window.innerHeight * 0.5;
+  let viewHeight = window.innerHeight * 0.70;
   let outHtml = `
     <div class="flex flex-col justify-end">
       <h2 class="text-xl">${team.name}</h2>
-      <div class="${colors[team.id]} w-auto text-white flex justify-center items-end text-xl font-mono" style="height: ${
+      <div class="${colors[team.id]} w-auto text-white flex justify-center items-end text-xl font-mono font-bold" style="height: ${
         viewHeight * (team.score / maxScore)
       }px; min-height: 2rem;">${team.score} b</div>
     </div>
