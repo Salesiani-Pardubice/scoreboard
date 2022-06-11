@@ -2,17 +2,53 @@ const spreadsheetsID = "spreadsheetsID";
 const listName = "listName";
 const googleAPIsheetKEY = "googleAPIsheetKEY";
 
+const colors = [
+  "bg-red-500",
+  "bg-yellow-400",
+  "bg-green-600",
+  "bg-sky-600",
+  "bg-emerald-600",
+  "bg-orange-600",
+  "bg-amber-600",
+  "bg-slate-600",
+  "bg-lime-600",
+  "bg-zinc-600",
+  "bg-teal-600",
+  "bg-cyan-600",
+  "bg-blue-600",
+  "bg-indigo-600",
+  "bg-violet-600",
+  "bg-pink-600",
+  "bg-rose-600",
+];
+let maxScore = 0;
+
 class Team {
-  constructor(name, data) {
+  constructor(name, data, id) {
+    this.id = id;
     this.name = name;
     this.score = 0;
 
     data.forEach((value) => {
       this.score += value[0];
     });
+    if (this.score > maxScore) maxScore = this.score;
 
     this.data = data;
   }
+}
+
+function printTeam(team) {
+  let viewHeight = window.innerHeight * 0.5;
+  let outHtml = `
+    <div class="flex flex-col justify-end">
+      <h2 class="text-xl">${team.name}</h2>
+      <div class="${colors[team.id]} w-auto text-white flex justify-center items-end text-xl font-mono" style="height: ${
+        viewHeight * (team.score / maxScore)
+      }px; min-height: 2rem;">${team.score} b</div>
+    </div>
+  `;
+  return outHtml;
 }
 
 async function render() {
@@ -26,7 +62,7 @@ async function render() {
     })
     .catch((err) => console.warn("Fetch warning", err));
 
-  console.log(data);
+  // console.log(data);
 
   let outHtml = ""; // output html string
 
@@ -36,9 +72,12 @@ async function render() {
       if (data.values[row][col] === undefined) break;
       log.push([parseInt(data.values[row][col]), data.values[row][col + 1]]);
     }
-
-    const team = new Team(data.values[0][col], log);
+    /* Create a team */
+    const team = new Team(data.values[0][col], log, col/2);
     console.log(team);
+
+    /* Add team html string */
+    outHtml += printTeam(team);
   }
 
   /* Redner data */
