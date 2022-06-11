@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Výsledková tabule</title>
-    <script src="main.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
   </head>
-  <body>
-    <main id="app"></main>
-    <footer class="w-screen flex justify-center items-end min-h-screen">
+  <body class="m-0 p-0">
+    <main id="app" class="w-screen flex justify-center">
+       <div class="text-2xl m-5 font-mono">data se načítají...</div>
+      </main>
+    <footer class="w-screen flex justify-center items-end m-0">
       <a
         href="https://github.com/Salesiani-Pardubice/scoreboard"
         target="_blank"
@@ -31,5 +32,6 @@
         více o projektu</a
       >
     </footer>
+    <script src="main.js"></script>
   </body>
 </html>
