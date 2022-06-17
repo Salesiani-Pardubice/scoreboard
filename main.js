@@ -2,6 +2,8 @@ const spreadsheetsID = "spreadsheetsID";
 const listName = "listName";
 const googleAPIsheetKEY = "googleAPIsheetKEY";
 
+let teams = new Array();
+
 const colors = [
   "bg-red-500",
   "bg-yellow-400",
@@ -53,14 +55,25 @@ function getMaxScore(data) {
   return maxScore;
 }
 
+function displayDetails(teamID) {
+  console.log(teamID);
+  const graph = document.getElementById(`graph-${teamID}`);
+  graph.classList.add("z-100");
+  graph.classList.add("absolute");
+  graph.classList.remove("w-auto");
+  graph.classList.add("w-screen");
+  graph.classList.add("inset-y-0");
+  graph.classList.add("left-0");
+}
+
 function printTeam(team, maxScore) {
   let viewHeight = window.innerHeight * 0.7;
   let outHtml = `
     <div class="flex flex-col justify-end">
       <h2 class="text-xl">${team.name}</h2>
-      <div class="${
+      <div id="graph-${team.id}" onClick="displayDetails(${team.id})" class="${
         colors[team.id]
-      } w-auto text-white flex justify-center items-end text-xl font-mono font-bold" style="height: ${
+      } w-auto text-white cursor-pointer hover:scale-x-105 transition-all flex justify-center items-end text-xl font-mono font-bold" style="height: ${
     viewHeight * (team.score / maxScore)
   }px; min-height: 2rem;">${team.score} b</div>
     </div>
@@ -94,12 +107,13 @@ async function render() {
     }
     /* Create a team */
     const team = new Team(data.values[0][col], log, col / 2);
+    teams.push(team);
 
-    /* Add team html string */
+    /* Add team's html string */
     outHtml += printTeam(team, maxScore);
   }
 
-  /* Redner data */
+  /* Render data */
   const app = document.getElementById("app");
   app.innerHTML = outHtml;
 }
