@@ -1,6 +1,6 @@
-const spreadsheetsID = "spreadsheetsID";
-const listName = "listName";
-const googleAPIsheetKEY = "googleAPIsheetKEY";
+const spreadsheetsID = GITHUB_GOOGLEAPISHEETKEY;
+const listName = GITHUB_LISTNAME;
+const googleAPIsheetKEY = GITHUB_SPREADSHEETSID;
 
 let teams = new Array();
 
